@@ -4,7 +4,7 @@ const { Kayn, REGIONS } = require("kayn");
 const app = express();
 const port = process.env.PORT || 5000;
 
-const kayn = Kayn("RGAPI-be473dbd-e8e6-4e41-9405-06bd63b1b5da")();
+const kayn = Kayn("<Your API KEY>")();
 
 app.get("/summoner/:id", async (req, res) => {
   const summoner = await kayn.Summoner.by.name(req.params.id).then(resp => {
