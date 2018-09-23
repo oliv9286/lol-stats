@@ -12,7 +12,8 @@ class App extends Component {
     this.state = {
       matches: [],
       summoner: null,
-      searchTerm: "olives86"
+      searchTerm: "olives86",
+      isLoading: false
     };
 
     this.fetchMatchesBySommonerId = this.fetchMatchesBySommonerId.bind(this);
@@ -20,6 +21,8 @@ class App extends Component {
 
   fetchMatchesBySommonerId = async () => {
     //TODO: switch to path here
+    this.setState({ isLoading: true });
+
     const matchData = await axios
       .get(`/summoner/${this.state.searchTerm}`)
       .then(resp => resp.data);
@@ -38,7 +41,8 @@ class App extends Component {
 
     this.setState({
       matches,
-      summoner: matchData.summoner
+      summoner: matchData.summoner,
+      isLoading: false
     });
   };
 
@@ -53,11 +57,14 @@ class App extends Component {
             this.setState({ searchTerm: e.target.value });
           }}
         />
-        <MatchList
-          summoner={this.state.summoner}
-          matches={this.state.matches}
-        />
-        <p>{this.state.searchTerm}</p>
+        {this.state.isLoading ? (
+          <div>loading your data, please wait...</div>
+        ) : (
+          <MatchList
+            summoner={this.state.summoner}
+            matches={this.state.matches}
+          />
+        )}
       </div>
     );
   }
